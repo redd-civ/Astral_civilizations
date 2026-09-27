@@ -1,0 +1,90 @@
+.va-game { box-sizing: border-box; font-family: 'Segoe UI', 'Palatino', serif;
+  background: #efe6d5; border: 8px solid #7c5f4b; border-radius: 32px;
+  padding: 24px 28px; color: #2c1e12; line-height: 1.5; max-width: 1100px; margin: 20px auto; }
+.va-game * { box-sizing: border-box; }
+.va-game h1 { text-align: center; font-size: 2rem; border-bottom: 3px double #5f4a36; padding-bottom: 12px; margin-top: 0; }
+.va-game h2 { border-left: 6px solid #5f4a36; padding-left: 12px; margin-top: 36px; color: #3a2a1c; }
+.va-game h3 { margin-top: 0; color: #2c1e12; }
+
+.va-gen-panel { background: #dac9b0; border: 2px solid #836e58; border-radius: 16px; padding: 18px 22px; margin: 20px 0; }
+.va-gen-panel h3 { margin-top: 0; border-left: 5px solid #5f4a36; padding-left: 10px; }
+.va-gen-row { display: grid; grid-template-columns: 200px 1fr; gap: 12px; align-items: center; margin-bottom: 10px; }
+.va-gen-row label { font-weight: bold; font-size: 0.9rem; }
+.va-gen-row input, .va-gen-row select { padding: 6px 10px; border: 2px solid #6b4f38; border-radius: 8px;
+  background: #fff6e8; font-size: 0.9rem; width: 100%; }
+.va-gen-row input[type="number"] { max-width: 100px; }
+
+.va-gen-btn { background: #4f6d5e; color: #fff; border: none; border-bottom: 4px solid #1e3328;
+  padding: 12px 26px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 12px; }
+.va-gen-btn:hover { background: #3f5b4f; }
+
+.va-shards-list { display: flex; flex-wrap: wrap; gap: 12px; }
+.va-shard-slot { background: #fff6e8; border: 2px solid #836e58; border-radius: 12px;
+  padding: 10px 12px; min-width: 180px; position: relative; }
+.va-shard-slot label { display: block; font-size: 0.8rem; font-weight: bold; color: #5f4a36; margin-bottom: 6px; }
+.va-shard-slot select { width: 100%; padding: 6px 10px; border: 2px solid #6b4f38;
+  border-radius: 8px; background: #efe6d5; font-size: 0.9rem; }
+.va-remove-btn { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px;
+  border-radius: 50%; background: #a13d2f; color: #fff; border: 2px solid #efe6d5;
+  cursor: pointer; font-weight: bold; display: grid; place-items: center; line-height: 1; }
+.va-add-shard-btn { margin-top: 10px; background: #cbbca6; border: 2px solid #836e58;
+  border-radius: 10px; padding: 6px 16px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+
+.va-tech-grid { background: #fff6e8; border-radius: 10px; padding: 12px; margin-top: 6px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.va-tech-row { display: flex; flex-direction: column; gap: 3px; font-size: 0.82rem; }
+.va-tech-row input[type="number"] { max-width: 70px; padding: 3px 6px; }
+
+.va-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0 4px; }
+.va-badge { background: #cbbca6; border: 1px solid #836e58; border-radius: 20px;
+  padding: 5px 14px; font-size: 0.82rem; font-weight: bold; }
+
+.va-summary { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 20px 0 8px; }
+.va-stat { background: #f5ecdc; border: 2px solid #836e58; border-radius: 12px; padding: 12px 14px; text-align: center; }
+.va-stat .k { font-size: 0.72rem; letter-spacing: .08em; text-transform: uppercase; color: #6b5a44; }
+.va-stat .v { font-size: 1.5rem; font-weight: bold; color: #3a2a1c; }
+.va-stat .v small { font-size: 0.75rem; font-weight: normal; color: #6b5a44; display: block; margin-top: 2px; }
+
+.va-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.va-card { background: #f5ecdc; border: 2px solid #836e58; border-radius: 16px; padding: 18px 20px; }
+.va-tag { font-size: 0.72rem; letter-spacing: .1em; text-transform: uppercase; color: #7c5f4b; font-weight: bold; }
+.va-card h3 { margin: 4px 0 10px; font-size: 1.15rem; }
+
+.va-rows { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.va-row { display: flex; justify-content: space-between; gap: 10px; font-size: 0.86rem;
+  padding-bottom: 6px; border-bottom: 1px dashed #d4c4a8; }
+.va-row:last-child { border-bottom: none; padding-bottom: 0; }
+.va-row .k { color: #6b5a44; }
+.va-row .v { font-weight: bold; text-align: right; }
+
+.va-orb { width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 12px;
+  background: radial-gradient(circle at 32% 28%, #dff0ff, #6fb4ff 40%, #3a5fd0 70%, #151f52);
+  box-shadow: 0 0 18px rgba(95,180,255,.5), inset -4px -6px 14px rgba(0,0,0,.55); }
+.va-orb.va-tiny { width: 38px; height: 38px; }
+.va-orb.va-small { width: 50px; height: 50px; background: radial-gradient(circle at 30% 26%, #fff0d6, #ffc98a 40%, #c47a3c 72%, #3b2410); }
+.va-orb.va-medium { width: 62px; height: 62px; background: radial-gradient(circle at 34% 30%, #e8ddff, #b79bff 40%, #6b46c9 72%, #1d1240); }
+.va-orb.va-large { width: 72px; height: 72px; background: radial-gradient(circle at 34% 30%, #ffe0d6, #ff9b6b 40%, #c94628 72%, #401010); }
+
+.va-race-box { display: grid; gap: 20px; grid-template-columns: auto 1fr; align-items: center;
+  background: #f5ecdc; border: 2px solid #836e58; border-radius: 16px; padding: 20px 22px; }
+.va-avatar { width: 78px; height: 78px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 2.4rem; background: #cbbca6; border: 2px solid #836e58; }
+.va-traits { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.va-trait { background: #dac9b0; border: 1px solid #836e58; border-radius: 8px;
+  padding: 4px 10px; font-size: 0.78rem; font-weight: bold; }
+
+.va-pip-row { display: flex; gap: 4px; margin-top: 10px; }
+.va-pip { width: 100%; height: 7px; border-radius: 4px; background: #d4c4a8; }
+.va-pip.on { background: #2e6b3e; box-shadow: 0 0 6px rgba(46,107,62,.6); }
+
+.va-unit { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.va-icon { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 12px; display: grid;
+  place-items: center; font-size: 1.6rem; background: #cbbca6; border: 2px solid #836e58; }
+
+.va-note { background: #f5ecdc; border-left: 4px solid #4f6d5e; padding: 10px 14px;
+  border-radius: 6px; font-size: 0.85rem; font-style: italic; margin: 14px 0; }
+
+@media (max-width: 620px) {
+  .va-race-box { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .va-gen-row { grid-template-columns: 1fr; }
+}
