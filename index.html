@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Люди, Осколки и Владыки — правила мира</title>
+<title>Люди, Осколки и Владыки</title>
 <link rel="stylesheet" href="landing.css">
 </head>
 <body>
@@ -16,80 +16,84 @@
       Соберите астральный мир из осколков, развивайте технологии,
       управляйте расами и ведите свой народ к процветанию.
     </p>
-    <a href="calculator.html" class="lp-cta">🎲 Открыть калькулятор</a>
   </div>
 </header>
 
 <main class="lp-main">
 
   <section class="lp-section">
-    <h2>О чём это</h2>
-    <p>
-      Вы — Владыка, собирающий осколки разбитого мира в единое целое.
-      Каждый осколок населён расой, у которой свои сильные стороны и слабости.
-      Развивайте технологии, стройте здания, нанимайте войска и ведите дипломатию.
-    </p>
-    <p>
-      Правила основаны на книгах <strong>GURPS</strong> (Low-Tech Companion 3, Realm Management,
-      Mass Combat) и адаптированы под нарративный стиль вроде <em>King of Dragon Pass</em>.
-    </p>
-  </section>
+    <h2>Три шага к вашей саге</h2>
+    <div class="lp-grid lp-grid-3">
 
-  <section class="lp-section">
-    <h2>Основные понятия</h2>
-    <div class="lp-grid">
-      <div class="lp-card">
-        <div class="lp-icon">🏝️</div>
-        <h3>Осколки</h3>
-        <p>От Крохотного (2 mi², размер 1) до Колоссального (69.5 mi², размер 43). Размер определяет лимит зданий и доход Эссенции.</p>
-      </div>
-      <div class="lp-card">
-        <div class="lp-icon">🌍</div>
-        <h3>Расы</h3>
-        <p>Люди, эльфы, гномы, орки, нежить, драконы и другие. У каждой — своя карма, свойства и расовые бонусы к технологиям.</p>
-      </div>
-      <div class="lp-card">
-        <div class="lp-icon">🔬</div>
-        <h3>Технологии</h3>
-        <p>20 направлений, по 6 уровней каждое. Рост технологии повышает эффективный TL — а значит, урожайность, доступ к ресурсам и мощь армии.</p>
-      </div>
-      <div class="lp-card">
+      <a href="rules.html" class="lp-link-card">
+        <div class="lp-icon">📖</div>
+        <h3>Правила</h3>
+        <p>Полные правила: расы, технологии, здания, армия, ресурсы и баланс.</p>
+        <span class="lp-card-btn">Читать правила →</span>
+      </a>
+
+      <a href="calculator.html" class="lp-link-card">
+        <div class="lp-icon">🎲</div>
+        <h3>Калькулятор</h3>
+        <p>Создайте свой первый мир: выберите расу, осколки, технологии и отряды.</p>
+        <span class="lp-card-btn">Создать мир →</span>
+      </a>
+
+      <a href="game.html" class="lp-link-card" id="gameLink">
         <div class="lp-icon">⚔️</div>
-        <h3>Армия</h3>
-        <p>Найм стоит Эссенцию, Людей и Материю. Содержание — 1 Люди (заняты навсегда) + 1 AP. Голодающий отряд получает «Недовольство».</p>
-      </div>
+        <h3>Игра</h3>
+        <p>Управляйте своим миром по ходам: исследования, стройка, найм, события.</p>
+        <span class="lp-card-btn">Продолжить игру →</span>
+      </a>
+
     </div>
   </section>
 
   <section class="lp-section">
-    <h2>Ресурсы</h2>
-    <table class="lp-table">
-      <tr><th>Ресурс</th><th>Что это</th></tr>
-      <tr><td><strong>Эссенция</strong></td><td>Сила Владыки. Зависит от размера осколка, заселённости и лояльности.</td></tr>
-      <tr><td><strong>Люди</strong></td><td>Рабочая сила. Тратится на найм, посев, строительство. Занятые не возвращаются.</td></tr>
-      <tr><td><strong>AP</strong></td><td>Избыток еды. 1 AP = еда для 100 человек. Идёт на рост, пир, армию.</td></tr>
-      <tr><td><strong>Материя</strong></td><td>Металл, дерево, камень. Только от производств. Доступ к ресурсам зависит от эфф. TL.</td></tr>
-      <tr><td><strong>Знание</strong></td><td>Научный потенциал. Идёт на исследование технологий.</td></tr>
-      <tr><td><strong>Влияние</strong></td><td>Социальный капитал. Для дипломатии и союзов.</td></tr>
-    </table>
+    <h2>О чём это</h2>
+    <p>
+      Вы — Владыка, собирающий осколки разбитого мира в единое целое.
+      Каждый осколок населён расой со своими сильными сторонами и слабостями.
+      Развивайте технологии, стройте здания, нанимайте войска, ведите дипломатию.
+    </p>
+    <p>
+      Правила основаны на книгах <strong>GURPS</strong> (Low-Tech Companion 3,
+      Realm Management, Mass Combat) и адаптированы под нарративный стиль вроде
+      <em>King of Dragon Pass</em>.
+    </p>
   </section>
 
   <section class="lp-section">
-    <h2>Краткие правила</h2>
-    <ul class="lp-list">
-      <li><strong>Эффективный TL</strong> = 1 + уровень технологии в отрасли. Без технологии Еды — эфф. TL1 (голод).</li>
-      <li><strong>Производство еды</strong>: доступно 75% земли, половина под паром (при эфф. TL1–2), урожайность 3–15 AP/mi².</li>
-      <li><strong>Железо</strong> открывается на эфф. TL2 (Промышленность 1), <strong>сталь</strong> — на эфф. TL3 (Промышленность 2).</li>
-      <li><strong>Прирост населения</strong>: базово +0.1% за сезон, +0.05% за уровень Медицины.</li>
-      <li><strong>Исследования</strong>: за ход можно изучить не более 3 технологий и не более 5 уровней суммарно.</li>
-      <li><strong>Недонаселённость</strong>: ниже 75% заселённости растёт стоимость строительства и исследований (до +150%).</li>
-    </ul>
+    <h2>Что вас ждёт</h2>
+    <div class="lp-grid">
+      <div class="lp-card">
+        <div class="lp-icon">🏝️</div>
+        <h3>Осколки</h3>
+        <p>От Крохотного (2 mi², размер 1) до Колоссального (69.5 mi², размер 43).</p>
+      </div>
+      <div class="lp-card">
+        <div class="lp-icon">🌍</div>
+        <h3>14 рас</h3>
+        <p>Люди, эльфы, гномы, орки, нежить, драконы и другие — с кармой и специализациями.</p>
+      </div>
+      <div class="lp-card">
+        <div class="lp-icon">🔬</div>
+        <h3>20 технологий</h3>
+        <p>По 6 уровней каждое. Эффективный TL влияет на урожайность, ресурсы и мощь армии.</p>
+      </div>
+      <div class="lp-card">
+        <div class="lp-icon">⚔️</div>
+        <h3>Армия и ходы</h3>
+        <p>Найм, содержание, голод, недовольство. Каждый ход — новые решения.</p>
+      </div>
+    </div>
   </section>
 
   <section class="lp-section lp-cta-section">
     <h2>Готовы начать?</h2>
-    <p>Откройте генератор и создайте свой первый мир за пару кликов.</p>
-    <a href="calculator.html" class="lp-cta">🎲 Открыть калькулятор</a>
+    <p>Создайте свой мир в калькуляторе или продолжите уже начатую сагу.</p>
+    <a href="calculator.html" class="lp-cta">🎲 Создать мир</a>
+    <a href="game.html" class="lp-cta lp-cta-secondary">⚔️ Продолжить игру</a>
   </section>
 
 </main>
@@ -97,6 +101,19 @@
 <footer class="lp-footer">
   Люди, Осколки и Владыки · Фанатский проект на основе правил GURPS
 </footer>
+
+<script>
+// Если игры нет — прячем кнопку «Продолжить игру»
+document.addEventListener('DOMContentLoaded', () => {
+  const hasSave = localStorage.getItem('va_game_state');
+  if (!hasSave) {
+    const link = document.getElementById('gameLink');
+    link.querySelector('p').textContent = 'Начните с создания мира в калькуляторе.';
+    link.querySelector('.lp-card-btn').textContent = 'Сначала создайте мир →';
+    link.href = 'calculator.html';
+  }
+});
+</script>
 
 </body>
 </html>
