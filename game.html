@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Игра — Люди, Осколки и Владыки</title>
+<link rel="stylesheet" href="va-styles.css">
+<style>
+  body {
+    background: #2b4a3f;
+    background-image: radial-gradient(circle at 10% 20%, #3f6b5c, #1e352b);
+    min-height: 100vh; margin: 0; padding: 20px;
+  }
+  .top-bar {
+    max-width: 1100px; margin: 0 auto 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .top-bar a { color: #efe6d5; text-decoration: none; font-weight: bold; }
+  .turn-btn {
+    background: #4f6d5e; color: #fff; border: none;
+    border-bottom: 4px solid #1e3328; padding: 12px 26px;
+    border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem;
+  }
+  .turn-btn:hover { background: #3f5b4f; }
+  .game-grid { display: grid; gap: 20px; margin-top: 20px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 800px) { .game-grid { grid-template-columns: 1fr; } }
+  .action-card { background: #f5ecdc; border: 2px solid #836e58; border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+  .action-card h3 { margin-top: 0; }
+  .action-btn {
+    background: #cbbca6; border: 2px solid #836e58; border-radius: 10px;
+    padding: 6px 14px; cursor: pointer; font-weight: bold; font-size: 0.88rem;
+  }
+  .action-btn:hover { background: #b7a088; }
+  .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .shard-select {
+    padding: 6px 10px; border: 2px solid #6b4f38; border-radius: 8px;
+    background: #fff6e8; margin-right: 8px;
+  }
+  .log-entry { padding: 8px 12px; border-bottom: 1px dashed #d4c4a8; font-size: 0.85rem; }
+  .log-entry:last-child { border-bottom: none; }
+  .log-entry .turn-tag {
+    display: inline-block; background: #cbbca6; border-radius: 10px;
+    padding: 1px 8px; font-size: 0.72rem; font-weight: bold; margin-right: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html">← На главную</a>
+  <div id="turnInfo" style="color:#efe6d5; font-weight:bold;"></div>
+  <div>
+    <button class="turn-btn" onclick="doTurn()">⏭ Следующий ход</button>
+    <button class="action-btn" style="margin-left:8px;" onclick="saveGame()">💾</button>
+    <button class="action-btn" onclick="exportGame()">📤</button>
+    <button class="action-btn" onclick="document.getElementById('importFile').click()">📥</button>
+    <button class="action-btn" onclick="resetGame()">🗑</button>
+    <input type="file" id="importFile" accept=".json" style="display:none;">
+  </div>
+</div>
+
+<div id="gameRoot" class="va-game">
+  <p>Загрузка...</p>
+</div>
+
+<script src="va-config.js"></script>
+<script src="va-races.js"></script>
+<script src="va-techs.js"></script>
+<script src="va-buildings.js"></script>
+<script src="va-troops.js"></script>
+<script src="va-engine.js"></script>
+<script src="va-storage.js"></script>
+<script src="va-game.js"></script>
+
+<script>
+let gameState = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  gameState = VA.Storage.load();
+  if (!gameState) {
+    document.getElementById('gameRoot').innerHTML = `
+      <h1>Нет сохранённой игры</h1>
+      <p>Сначала создайте мир в <a href="calculator.html">калькуляторе</a>.</p>`;
+    return;
+  }
+  render();
+
+  document.getElementById('importFile').addEventListener('change', async (e) => {
+    if (!e.target.files[0]) return;
+    try {
+      gameState = await VA.Storage.import(e.target.files[0]);
+      VA.Storage.save(gameState);
+      render();
+      alert('Игра загружена');
+    } catch (err) { alert('Ошибка загрузки: ' + err.message); }
+  });
+});
+
+function saveGame() { if (VA.Storage.save(gameState)) alert('Сохранено'); }
+function exportGame() { VA.Storage.export(gameState); }
+function resetGame() {
+  if (confirm('Удалить сохранение? Это необратимо.')) {
+    VA.Storage.clear();
+    window.location.href = 'index.html';
+  }
+}
+
+function doTurn() {
+  gameState = VA.Game.nextTurn(gameState);
+  VA.Storage.save(gameState);
+  render();
+}
+
+function research(techId) {
+  const res = VA.Game.research(gameState, techId);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function build(shardIdx, buildingName, techId) {
+  const res = VA.Game.build(gameState, shardIdx, buildingName, techId);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function hire(shardIdx, troopName) {
+  const res = VA.Game.hire(gameState, shardIdx, troopName);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function render() {
+  if (!gameState) return;
+  const g = gameState;
+  const essenceLimit = VA.Game.getEssenceLimit(g);
+  const people = VA.Game.getPeople(g);
+  const usedPeople = VA.Game.getUsedPeople(g);
+
+  document.getElementById('turnInfo').textContent =
+    `${g.worldName} · Ход ${g.turn} · ${g.seasons[g.seasonIdx]}`;
+
+  let html = `<h1>🌍 ${g.worldName}</h1>
+    <div class="va-badges">
+      <span class="va-badge">Раса: ${g.race.name}</span>
+      <span class="va-badge">Ход: ${g.turn}</span>
+      <span class="va-badge">${g.seasons[g.seasonIdx]}</span>
+    </div>
+
+    <div class="va-summary">
+      <div class="va-stat"><div class="k">Эссенция</div>
+        <div class="v">${g.resources.essence.toFixed(1)} <small>/ ${essenceLimit}</small></div></div>
+      <div class="va-stat"><div class="k">AP</div>
+        <div class="v">${g.resources.ap} <small>/ ${g.storage.ap}</small></div></div>
+      <div class="va-stat"><div class="k">Материя</div>
+        <div class="v">${g.resources.materia} <small>/ ${g.storage.materia}</small></div></div>
+      <div class="va-stat"><div class="k">Знание</div>
+        <div class="v">${g.resources.knowledge}</div></div>
+      <div class="va-stat"><div class="k">Люди</div>
+        <div class="v">${usedPeople} / ${people}</div></div>
+    </div>
+
+    <div class="game-grid">
+      <div>
+        <h2>📋 Осколки</h2>`;
+
+  g.shards.forEach((s, i) => {
+    html += `<div class="action-card">
+      <h3>Осколок ${VA.roman(s.idx)} — ${s.name}</h3>
+      <div class="va-rows">
+        <div class="va-row"><span class="k">Население</span><span class="v">${VA.fmt(s.factPop)} / ${VA.fmt(s.maxPop)}</span></div>
+        <div class="va-row"><span class="k">Лояльность</span><span class="v">${s.loyalty} / 10</span></div>
+        <div class="va-row"><span class="k">Здания (${s.buildings.length}/${s.size})</span><span class="v">${s.buildings.join(', ') || '—'}</span></div>
+        <div class="va-row"><span class="k">Отряды</span><span class="v">${s.troops.map(t=>t.type).join(', ') || '—'}</span></div>
+      </div>
+    </div>`;
+  });
+
+  html += `</div>
+    <div>
+      <h2>🔬 Исследования</h2>
+      <div class="action-card">
+        <p style="font-size:0.85rem; color:#6b5a44;">За ход: не более 3 технологий и 5 уровней.</p>`;
+
+  VA.techs.forEach(t => {
+    const lvl = g.techs[t.id] || 0;
+    const cost = VA.formulas.techCost(lvl);
+    const can = VA.Game.canResearch(g, t.id);
+    html += `<div class="va-row" style="align-items:center;">
+      <span class="k">${t.name} — ур. ${lvl} → ${lvl+1}</span>
+      <span class="v">
+        <span style="font-size:0.78rem; color:#6b5a44;">${cost.zn} Зн / ${cost.el} Э</span>
+        <button class="action-btn" style="margin-left:8px;" ${can.ok?'':'disabled'}
+          onclick="research('${t.id}')">Изучить</button>
+      </span>
+    </div>`;
+  });
+
+  html += `</div>
+
+      <h2>🏗️ Строительство</h2>
+      <div class="action-card">
+        <div style="margin-bottom:10px;">
+          <select id="buildShard" class="shard-select">
+            ${g.shards.map((s,i)=>`<option value="${i}">${s.name} (${s.buildings.length}/${s.size})</option>`).join('')}
+          </select>
+          <select id="buildTech" class="shard-select">
+            ${VA.techs.filter(t => (g.techs[t.id]||0) > 0).map(t =>
+              `<option value="${t.id}">${t.name}</option>`).join('')}
+          </select>
+          <select id="buildName" class="shard-select">
+            <option>Ферма</option>
+            <option>Мельница</option>
+            <option>Шахта</option>
+            <option>Кузница</option>
+            <option>Башня учёного</option>
+            <option>Казармы</option>
+            <option>Стрельбище</option>
+            <option>Лазарет</option>
+          </select>
+          <button class="action-btn" onclick="buildFromUI()">Построить</button>
+        </div>
+        <p style="font-size:0.82rem; color:#6b5a44;">Стоимость: 3 Э + 2 Материи. Лимит = размер осколка.</p>
+      </div>
+
+      <h2>⚔️ Найм отрядов</h2>
+      <div class="action-card">
+        <div style="margin-bottom:10px;">
+          <select id="hireShard" class="shard-select">
+            ${g.shards.map((s,i)=>`<option value="${i}">${s.name}</option>`).join('')}
+          </select>
+          <select id="hireType" class="shard-select">
+            <option>Лёгкая пехота</option>
+            <option>Лучники</option>
+          </select>
+          <button class="action-btn" onclick="hireFromUI()">Нанять</button>
+        </div>
+        <p style="font-size:0.82rem; color:#6b5a44;">Найм: 2 Э + 1 Материя + 1 Люди. Содержание: 1 AP за ход.</p>
+      </div>
+
+      <h2>📜 Журнал</h2>
+      <div class="action-card" style="max-height:280px; overflow-y:auto;">
+        ${g.log.slice().reverse().map(l => `
+          <div class="log-entry">
+            <span class="turn-tag">Ход ${l.turn} · ${l.season}</span>
+            ${VA.escapeHtml(l.text)}
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('gameRoot').innerHTML = html;
+}
+
+function buildFromUI() {
+  const shardIdx = parseInt(document.getElementById('buildShard').value);
+  const techId = document.getElementById('buildTech').value;
+  const buildingName = document.getElementById('buildName').value;
+  build(shardIdx, buildingName, techId);
+}
+
+function hireFromUI() {
+  const shardIdx = parseInt(document.getElementById('hireShard').value);
+  const troopName = document.getElementById('hireType').value;
+  hire(shardIdx, troopName);
+}
+</script>
+
+</body>
+</html>
