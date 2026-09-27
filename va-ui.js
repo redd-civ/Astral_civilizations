@@ -116,6 +116,7 @@ VA.UI = {
       shardSpecs, baseTL, loyalty, techs, race, raceKey: realRaceKey, troopCount, worldName
     });
 
+    VA._lastWorld = world;
     VA.UI.render(world);
   },
 
@@ -155,7 +156,6 @@ VA.UI = {
         <div class="va-rows">
           <div class="va-row"><span class="k">Площадь</span><span class="v">${s.area} mi²</span></div>
           <div class="va-row"><span class="k">Размер</span><span class="v">${s.size}</span></div>
-          <div class="va-row"><span class="k">Лимит зданий</span><span class="v">${s.size}</span></div>
           <div class="va-row"><span class="k">Макс. население</span><span class="v">${VA.fmt(s.maxPop)}</span></div>
           <div class="va-row"><span class="k">Факт. население</span><span class="v">${VA.fmt(s.factPop)}</span></div>
           <div class="va-row"><span class="k">Люди</span><span class="v">${s.people}</span></div>
@@ -221,17 +221,25 @@ VA.UI = {
       html += `</div>`;
     }
 
+    // Кнопка "Начать игру"
+    html += `<div style="text-align:center; margin-top:30px;">
+      <button class="va-gen-btn" onclick="VA.UI.startGame()" style="font-size:1.15rem; padding:16px 40px;">
+        ⚔️ Сохранить и начать игру
+      </button>
+    </div>`;
+
     html += `<footer style="margin-top:40px;text-align:center;font-size:0.78rem;color:#6b5a44">
       ${VA.escapeHtml(d.worldName)} · ${d.race.name} · ${techCount} технологий · ${d.troops.length} отрядов</footer>`;
 
     o.innerHTML = html;
-    o.innerHTML += `
-  <div style="text-align:center; margin-top:24px;">
-    <button class="va-gen-btn" onclick="VA.UI.startGame()" style="font-size:1.1rem; padding:16px 36px;">
-      ⚔️ Сохранить и начать игру
-    </button>
-  </div>`;
     o.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  },
+
+  startGame() {
+    if (!VA._lastWorld) { alert('Сначала сгенерируйте мир'); return; }
+    const state = VA.Game.fromWorld(VA._lastWorld);
+    VA.Storage.save(state);
+    window.location.href = 'game.html';
   }
 };
 
