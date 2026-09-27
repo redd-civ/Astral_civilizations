@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "worldName": "Мир Трёх Осколков",
+  "raceKey": "mech",
+  "race": {
+    "name": "Механоиды",
+    "icon": "⚙️",
+    "tag": "neu",
+    "karma": "нейтральная",
+    "bonus": "engineering",
+    "desc": "Созданные для труда.",
+    "traits": [
+      "Размножаются искусственно",
+      "Мастер инженерии",
+      "Живучесть"
+    ],
+    "growthBonus": 0,
+    "artificial": true
+  },
+  "baseTL": 2,
+  "techs": {
+    "food": 0,
+    "animal": 0,
+    "industry": 0,
+    "alchemy": 0,
+    "artifact": 0,
+    "crystal": 0,
+    "engineering": 0,
+    "logistics": 0,
+    "management": 0,
+    "melee": 0,
+    "range": 0,
+    "war": 0,
+    "stealth": 0,
+    "diplomacy": 0,
+    "culture": 0,
+    "medicine": 0,
+    "science": 0,
+    "sea": 0,
+    "economy": 0,
+    "intel": 0
+  },
+  "turn": 1,
+  "seasonIdx": 1,
+  "seasons": [
+    "🌱 Посев",
+    "☀️ Лето",
+    "🍂 Урожай",
+    "❄️ Зима"
+  ],
+  "resources": {
+    "essence": 17,
+    "ap": 8,
+    "materia": 5,
+    "knowledge": 3,
+    "influence": 2
+  },
+  "storage": {
+    "ap": 12,
+    "materia": 12
+  },
+  "shards": [
+    {
+      "idx": 1,
+      "size": 2,
+      "name": "Маленький",
+      "area": 3.3,
+      "maxPop": 578,
+      "factPop": 434,
+      "loyalty": 5,
+      "buildings": [
+        "Ферма"
+      ],
+      "troops": []
+    },
+    {
+      "idx": 2,
+      "size": 1,
+      "name": "Крохотный",
+      "area": 2,
+      "maxPop": 350,
+      "factPop": 263,
+      "loyalty": 5,
+      "buildings": [
+        "Ферма"
+      ],
+      "troops": []
+    },
+    {
+      "idx": 3,
+      "size": 3,
+      "name": "Небольшой",
+      "area": 5.5,
+      "maxPop": 963,
+      "factPop": 722,
+      "loyalty": 5,
+      "buildings": [
+        "Ферма"
+      ],
+      "troops": []
+    }
+  ],
+  "log": [
+    {
+      "turn": 1,
+      "season": "🌱 Посев",
+      "text": "Мир «Мир Трёх Осколков» основан. Раса: Механоиды."
+    },
+    {
+      "turn": 1,
+      "season": "☀️ Лето",
+      "text": "✨ +4.5 Эссенции · 🌾 AP: -2 · ⛏️ +0 Материи · 📚 +0 Знаний · 👥 +0"
+    }
+  ],
+  "actionsThisTurn": {
+    "researched": [],
+    "builtThisTurn": [],
+    "hiredThisTurn": []
+  }
+}

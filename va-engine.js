@@ -45,7 +45,6 @@ VA.formulas = {
     return lvl >= t.req.lvl;
   }),
 
-  // Стоимость перехода на следующий уровень технологии
   techCost: (fromLvl) => {
     const costs = [
       { zn: 5,   el: 5,   time: 1 },

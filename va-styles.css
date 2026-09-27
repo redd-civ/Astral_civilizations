@@ -39,7 +39,7 @@
 .va-badge { background: #cbbca6; border: 1px solid #836e58; border-radius: 20px;
   padding: 5px 14px; font-size: 0.82rem; font-weight: bold; }
 
-.va-summary { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 20px 0 8px; }
+.va-summary { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin: 20px 0 8px; }
 .va-stat { background: #f5ecdc; border: 2px solid #836e58; border-radius: 12px; padding: 12px 14px; text-align: center; }
 .va-stat .k { font-size: 0.72rem; letter-spacing: .08em; text-transform: uppercase; color: #6b5a44; }
 .va-stat .v { font-size: 1.5rem; font-weight: bold; color: #3a2a1c; }

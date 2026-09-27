@@ -25,7 +25,11 @@
   .turn-btn:hover { background: #3f5b4f; }
   .game-grid { display: grid; gap: 20px; margin-top: 20px; grid-template-columns: 1fr 1fr; }
   @media (max-width: 800px) { .game-grid { grid-template-columns: 1fr; } }
-  .action-card { background: #f5ecdc; border: 2px solid #836e58; border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+  .action-card {
+    background: #f5ecdc; border: 2px solid #836e58;
+    border-radius: 16px; padding: 18px 20px; margin-bottom: 14px;
+  }
+  .action-card.capital { border-color: #c47a3c; background: #faf0e0; }
   .action-card h3 { margin-top: 0; }
   .action-btn {
     background: #cbbca6; border: 2px solid #836e58; border-radius: 10px;
@@ -33,6 +37,9 @@
   }
   .action-btn:hover { background: #b7a088; }
   .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .action-btn.small { padding: 3px 8px; font-size: 0.78rem; }
+  .action-btn.danger { background: #d9a89a; border-color: #8a4a3a; }
+  .action-btn.danger:hover { background: #c9917f; }
   .shard-select {
     padding: 6px 10px; border: 2px solid #6b4f38; border-radius: 8px;
     background: #fff6e8; margin-right: 8px;
@@ -42,6 +49,30 @@
   .log-entry .turn-tag {
     display: inline-block; background: #cbbca6; border-radius: 10px;
     padding: 1px 8px; font-size: 0.72rem; font-weight: bold; margin-right: 8px;
+  }
+  .researching-row {
+    background: #f0e2c4; border-radius: 8px; padding: 6px 10px; margin: 4px 0;
+    font-size: 0.85rem;
+  }
+  .building-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #dac9b0; border-radius: 12px; padding: 3px 6px 3px 10px;
+    margin: 2px 4px 2px 0; font-size: 0.82rem;
+  }
+  .building-chip .x {
+    background: #a13d2f; color: #fff; border: none; border-radius: 50%;
+    width: 16px; height: 16px; cursor: pointer; font-size: 0.7rem;
+    line-height: 1; padding: 0;
+  }
+  .troop-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #c9d4b8; border-radius: 12px; padding: 3px 6px 3px 10px;
+    margin: 2px 4px 2px 0; font-size: 0.82rem;
+  }
+  .troop-chip .x {
+    background: #6b4f38; color: #fff; border: none; border-radius: 50%;
+    width: 16px; height: 16px; cursor: pointer; font-size: 0.7rem;
+    line-height: 1; padding: 0;
   }
 </style>
 </head>
@@ -126,8 +157,42 @@ function build(shardIdx, buildingName, techId) {
   render();
 }
 
+function demolish(shardIdx, buildingName) {
+  if (!confirm(`Снести «${buildingName}»?`)) return;
+  const res = VA.Game.demolish(gameState, shardIdx, buildingName);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
 function hire(shardIdx, troopName) {
   const res = VA.Game.hire(gameState, shardIdx, troopName);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function disband(shardIdx, troopIndex) {
+  if (!confirm('Распустить отряд?')) return;
+  const res = VA.Game.disband(gameState, shardIdx, troopIndex);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function feast(shardIdx) {
+  const res = VA.Game.feast(gameState, shardIdx);
+  if (!res.ok) { alert(res.reason); return; }
+  VA.Storage.save(gameState);
+  render();
+}
+
+function boostGrowth(shardIdx) {
+  const input = prompt('Сколько AP потратить? (1 AP = +0.5% к приросту, макс +2%)', '1');
+  if (input === null) return;
+  const ap = parseInt(input);
+  if (isNaN(ap) || ap < 1) { alert('Введите число ≥ 1'); return; }
+  const res = VA.Game.boostGrowth(gameState, shardIdx, ap);
   if (!res.ok) { alert(res.reason); return; }
   VA.Storage.save(gameState);
   render();
@@ -139,15 +204,17 @@ function render() {
   const essenceLimit = VA.Game.getEssenceLimit(g);
   const people = VA.Game.getPeople(g);
   const usedPeople = VA.Game.getUsedPeople(g);
+  const worldSize = VA.Game.getWorldSize(g);
+  const feastCost = worldSize * VA.config.feastCostPerSize;
 
   document.getElementById('turnInfo').textContent =
-    `${g.worldName} · Ход ${g.turn} · ${g.seasons[g.seasonIdx]}`;
+    `${g.worldName} · Ход ${g.turn}`;
 
   let html = `<h1>🌍 ${g.worldName}</h1>
     <div class="va-badges">
       <span class="va-badge">Раса: ${g.race.name}</span>
       <span class="va-badge">Ход: ${g.turn}</span>
-      <span class="va-badge">${g.seasons[g.seasonIdx]}</span>
+      <span class="va-badge">Размер мира: ${worldSize}</span>
     </div>
 
     <div class="va-summary">
@@ -159,6 +226,8 @@ function render() {
         <div class="v">${g.resources.materia} <small>/ ${g.storage.materia}</small></div></div>
       <div class="va-stat"><div class="k">Знание</div>
         <div class="v">${g.resources.knowledge}</div></div>
+      <div class="va-stat"><div class="k">Влияние</div>
+        <div class="v">${g.resources.influence}</div></div>
       <div class="va-stat"><div class="k">Люди</div>
         <div class="v">${usedPeople} / ${people}</div></div>
     </div>
@@ -168,13 +237,56 @@ function render() {
         <h2>📋 Осколки</h2>`;
 
   g.shards.forEach((s, i) => {
-    html += `<div class="action-card">
-      <h3>Осколок ${VA.roman(s.idx)} — ${s.name}</h3>
+    const capitalClass = s.hasCapital ? ' capital' : '';
+    const capitalBadge = s.hasCapital
+      ? '<span class="va-badge" style="background:#c47a3c; color:#fff; margin-left:8px;">🏛️ Столица</span>'
+      : '';
+
+    const buildingsHtml = s.buildings.length > 0
+      ? s.buildings.map(b =>
+          `<span class="building-chip">${b}<button class="x" onclick="demolish(${i}, '${b.replace(/'/g,"\\'")}')">×</button></span>`
+        ).join('')
+      : '—';
+
+    const troopsHtml = s.troops.length > 0
+      ? s.troops.map((t, ti) =>
+          `<span class="troop-chip">${t.type}${t.free ? ' ⭐' : ''}<button class="x" onclick="disband(${i}, ${ti})">×</button></span>`
+        ).join('')
+      : '—';
+
+    const pendingBonus = (s.pendingGrowthBonus || 0) > 0
+      ? `<div class="va-row"><span class="k">Бонус роста</span><span class="v">+${(s.pendingGrowthBonus*100).toFixed(1)}%</span></div>`
+      : '';
+
+    html += `<div class="action-card${capitalClass}">
+      <h3>Осколок ${VA.roman(s.idx)} — ${s.name} ${capitalBadge}</h3>
       <div class="va-rows">
         <div class="va-row"><span class="k">Население</span><span class="v">${VA.fmt(s.factPop)} / ${VA.fmt(s.maxPop)}</span></div>
         <div class="va-row"><span class="k">Лояльность</span><span class="v">${s.loyalty} / 10</span></div>
-        <div class="va-row"><span class="k">Здания (${s.buildings.length}/${s.size})</span><span class="v">${s.buildings.join(', ') || '—'}</span></div>
-        <div class="va-row"><span class="k">Отряды</span><span class="v">${s.troops.map(t=>t.type).join(', ') || '—'}</span></div>
+        ${pendingBonus}
+      </div>
+
+      <div style="margin-top:10px;">
+        <div style="font-size:0.78rem; color:#6b5a44; margin-bottom:4px;">
+          Здания (${s.buildings.length}/${s.size}):
+        </div>
+        <div>${buildingsHtml}</div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <div style="font-size:0.78rem; color:#6b5a44; margin-bottom:4px;">
+          Отряды:
+        </div>
+        <div>${troopsHtml}</div>
+      </div>
+
+      <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap;">
+        <button class="action-btn small" onclick="feast(${i})" ${s.loyalty >= 10 ? 'disabled' : ''}>
+          🍷 Пир (${feastCost} AP)
+        </button>
+        <button class="action-btn small" onclick="boostGrowth(${i})">
+          🌱 Ускорение роста
+        </button>
       </div>
     </div>`;
   });
@@ -183,18 +295,43 @@ function render() {
     <div>
       <h2>🔬 Исследования</h2>
       <div class="action-card">
-        <p style="font-size:0.85rem; color:#6b5a44;">За ход: не более 3 технологий и 5 уровней.</p>`;
+        <p style="font-size:0.85rem; color:#6b5a44;">
+          За ход: макс. 3 технологии и 5 уровней. Исследование занимает время.
+        </p>`;
+
+  // Активные исследования
+  if (g.researching.length > 0) {
+    html += `<div style="margin-bottom:12px;">
+      <div style="font-size:0.78rem; color:#6b5a44; margin-bottom:4px; font-weight:bold;">
+        В работе:
+      </div>`;
+    g.researching.forEach(r => {
+      const name = VA.techs.find(t => t.id === r.techId)?.name || r.techId;
+      html += `<div class="researching-row">
+        ⏳ <strong>${name}</strong> → ур. ${r.targetLevel} · осталось ${r.turnsLeft} х.
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Доступные исследования
+  html += `<div style="font-size:0.78rem; color:#6b5a44; margin-bottom:4px; font-weight:bold;">
+    Доступные:
+  </div>`;
 
   VA.techs.forEach(t => {
     const lvl = g.techs[t.id] || 0;
     const cost = VA.formulas.techCost(lvl);
     const can = VA.Game.canResearch(g, t.id);
+    const inProgress = g.researching.find(r => r.techId === t.id);
+    const label = inProgress ? `${t.name} — в работе` : `${t.name} — ур. ${lvl} → ${lvl+1}`;
+
     html += `<div class="va-row" style="align-items:center;">
-      <span class="k">${t.name} — ур. ${lvl} → ${lvl+1}</span>
+      <span class="k">${label}</span>
       <span class="v">
-        <span style="font-size:0.78rem; color:#6b5a44;">${cost.zn} Зн / ${cost.el} Э</span>
+        <span style="font-size:0.78rem; color:#6b5a44;">${cost.zn} Зн / ${cost.el} Э · ${cost.time} х.</span>
         <button class="action-btn" style="margin-left:8px;" ${can.ok?'':'disabled'}
-          onclick="research('${t.id}')">Изучить</button>
+          onclick="research('${t.id}')">Начать</button>
       </span>
     </div>`;
   });
@@ -212,14 +349,16 @@ function render() {
               `<option value="${t.id}">${t.name}</option>`).join('')}
           </select>
           <select id="buildName" class="shard-select">
-            <option>Ферма</option>
-            <option>Мельница</option>
-            <option>Шахта</option>
-            <option>Кузница</option>
-            <option>Башня учёного</option>
-            <option>Казармы</option>
-            <option>Стрельбище</option>
-            <option>Лазарет</option>
+                <optgroup label="Требуют технологии">
+		<option>Ферма</option>
+              <option>Мельница</option>
+              <option>Шахта</option>
+              <option>Кузница</option>
+              <option>Башня учёного</option>
+              <option>Казармы</option>
+              <option>Стрельбище</option>
+              <option>Лазарет</option>
+            </optgroup>
           </select>
           <button class="action-btn" onclick="buildFromUI()">Построить</button>
         </div>
@@ -245,7 +384,7 @@ function render() {
       <div class="action-card" style="max-height:280px; overflow-y:auto;">
         ${g.log.slice().reverse().map(l => `
           <div class="log-entry">
-            <span class="turn-tag">Ход ${l.turn} · ${l.season}</span>
+            <span class="turn-tag">Ход ${l.turn}</span>
             ${VA.escapeHtml(l.text)}
           </div>`).join('')}
       </div>

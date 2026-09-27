@@ -141,17 +141,23 @@ VA.UI = {
       <div class="va-stat"><div class="k">Эссенция</div><div class="v">${d.totalEssence.toFixed(1)}</div></div>
       <div class="va-stat"><div class="k">Чистый AP</div><div class="v">+${d.totalAP}</div></div>
       <div class="va-stat"><div class="k">Хранение AP</div><div class="v">${d.totalAPStorage}</div></div>
+      <div class="va-stat"><div class="k">Знание/ход</div><div class="v">${Math.max(1, Math.floor(d.totalPop / 500))}</div></div>
     </div>`;
 
     html += `<div class="va-note">Заселённость ${VA.config.filledRatio*100}%, лояльность ${d.loyalty}.
       Эфф. TL Еды: <strong>${d.effTLFood}</strong>, Промышленности: <strong>${d.effTLInd}</strong>.
+      Первый осколок — <strong>🏛️ Столица</strong> (+2 Знания, +10 хранение, бесплатные стартовые отряды).
       ${d.race.artificial ? 'Раса размножается искусственно.' : ''}</div>`;
 
     html += `<h2>Осколки</h2><div class="va-grid">`;
     d.shards.forEach(s => {
+      const capitalBadge = s.idx === 1
+        ? '<span class="va-tag" style="background:#c47a3c; color:#fff;">🏛️ Столица</span>'
+        : `<span class="va-tag">Осколок ${VA.roman(s.idx)}</span>`;
+
       html += `<article class="va-card">
         <div class="va-orb va-${VA.orbClass(s.size)}"></div>
-        <div class="va-tag">Осколок ${VA.roman(s.idx)}</div>
+        ${capitalBadge}
         <h3>${s.name}</h3>
         <div class="va-rows">
           <div class="va-row"><span class="k">Площадь</span><span class="v">${s.area} mi²</span></div>
@@ -209,19 +215,18 @@ VA.UI = {
           <div class="va-unit">
             <div class="va-icon">${t.icon}</div>
             <div><h3 style="margin:0;font-size:1rem">Отряд ${VA.roman(i+1)}</h3>
-              <div class="va-tag">Базовый</div></div>
+              <div class="va-tag">Базовый · в Столице</div></div>
           </div>
           <div class="va-rows">
             <div class="va-row"><span class="k">Тип</span><span class="v">${t.name}</span></div>
-            <div class="va-row"><span class="k">Найм</span><span class="v">2 Э, 1 Люди, 1 Мат</span></div>
-            <div class="va-row"><span class="k">Содержание</span><span class="v">1 Люди + 1 AP</span></div>
+            <div class="va-row"><span class="k">Найм</span><span class="v">бесплатно (стартовый)</span></div>
+            <div class="va-row"><span class="k">Содержание</span><span class="v">0 (в Столице)</span></div>
           </div>
         </article>`;
       });
       html += `</div>`;
     }
 
-    // Кнопка "Начать игру"
     html += `<div style="text-align:center; margin-top:30px;">
       <button class="va-gen-btn" onclick="VA.UI.startGame()" style="font-size:1.15rem; padding:16px 40px;">
         ⚔️ Сохранить и начать игру
@@ -242,11 +247,5 @@ VA.UI = {
     window.location.href = 'game.html';
   }
 };
-
-VA.pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-VA.fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-VA.escapeHtml = (s) => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-VA.roman = (n) => ['','I','II','III','IV','V','VI','VII','VIII','IX','X'][n] || n;
-VA.orbClass = (size) => size <= 1 ? 'tiny' : size <= 3 ? 'small' : size <= 9 ? 'medium' : 'large';
 
 document.addEventListener('DOMContentLoaded', () => VA.UI.init());

@@ -6,10 +6,13 @@ VA.config = {
   peopleDivisor: 250,
   peopleWorkRatio: 0.6,
   filledRatio: 0.75,
-  baseGrowth: 0.001,
-  medicineGrowthPerLevel: 0.0005,
+  baseGrowth: 0.01,               // базовый прирост 1% за ход
+  medicineGrowthPerLevel: 0.002,  // +0.2% за уровень Медицины
   essenceLoyaltyDivider: 5,
-  storagePerSize: 2
+  storagePerSize: 2,
+  feastCostPerSize: 1,            // пир: 1 AP × размер мира
+  growthBoostPerAP: 0.005,        // +0.5% за 1 AP
+  growthBoostMax: 0.02            // потолок +2% за ход (4 AP)
 };
 
 VA.sizes = [
@@ -25,15 +28,11 @@ VA.sizes = [
 
 VA.density = {1:125, 2:175, 3:275, 4:450, 5:725};
 
-// ==================== ХЕЛПЕРЫ (общие для всех страниц) ====================
+// ==================== ХЕЛПЕРЫ ====================
 VA.pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
 VA.fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-
 VA.escapeHtml = (s) => s.replace(/[&<>"']/g, c => (
   {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
 ));
-
 VA.roman = (n) => ['','I','II','III','IV','V','VI','VII','VIII','IX','X'][n] || n;
-
 VA.orbClass = (size) => size <= 1 ? 'tiny' : size <= 3 ? 'small' : size <= 9 ? 'medium' : 'large';
