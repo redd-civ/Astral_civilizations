@@ -12,10 +12,7 @@
   <div class="lp-hero-inner">
     <div class="lp-badge">Стратегия · Фэнтези · GURPS</div>
     <h1>🌍 Люди, Осколки и Владыки</h1>
-    <p class="lp-sub">
-      Соберите астральный мир из осколков, развивайте технологии,
-      управляйте расами и ведите свой народ к процветанию.
-    </p>
+    <p class="lp-sub">Соберите астральный мир из осколков, развивайте технологии, управляйте расами и ведите свой народ к процветанию.</p>
   </div>
 </header>
 
@@ -24,68 +21,40 @@
   <section class="lp-section">
     <h2>Три шага к вашей саге</h2>
     <div class="lp-grid lp-grid-3">
-
       <a href="rules.html" class="lp-link-card">
         <div class="lp-icon">📖</div>
         <h3>Правила</h3>
         <p>Полные правила: расы, технологии, здания, армия, ресурсы и баланс.</p>
         <span class="lp-card-btn">Читать правила →</span>
       </a>
-
       <a href="calculator.html" class="lp-link-card">
         <div class="lp-icon">🎲</div>
         <h3>Калькулятор</h3>
         <p>Создайте свой первый мир: выберите расу, осколки, технологии и отряды.</p>
         <span class="lp-card-btn">Создать мир →</span>
       </a>
-
       <a href="game.html" class="lp-link-card" id="gameLink">
         <div class="lp-icon">⚔️</div>
         <h3>Игра</h3>
         <p>Управляйте своим миром по ходам: исследования, стройка, найм, события.</p>
         <span class="lp-card-btn">Продолжить игру →</span>
       </a>
-
     </div>
   </section>
 
   <section class="lp-section">
     <h2>О чём это</h2>
-    <p>
-      Вы — Владыка, собирающий осколки разбитого мира в единое целое.
-      Каждый осколок населён расой со своими сильными сторонами и слабостями.
-      Развивайте технологии, стройте здания, нанимайте войска, ведите дипломатию.
-    </p>
-    <p>
-      Правила основаны на книгах <strong>GURPS</strong> (Low-Tech Companion 3,
-      Realm Management, Mass Combat) и адаптированы под нарративный стиль вроде
-      <em>King of Dragon Pass</em>.
-    </p>
+    <p>Вы — Владыка, собирающий осколки разбитого мира в единое целое. Каждый осколок населён расой со своими сильными сторонами и слабостями. Развивайте технологии, стройте здания, нанимайте войска, ведите дипломатию.</p>
+    <p>Правила основаны на книгах <strong>GURPS</strong> (Low-Tech Companion 3, Realm Management, Mass Combat) и адаптированы под нарративный стиль вроде <em>King of Dragon Pass</em>.</p>
   </section>
 
   <section class="lp-section">
     <h2>Что вас ждёт</h2>
     <div class="lp-grid">
-      <div class="lp-card">
-        <div class="lp-icon">🏝️</div>
-        <h3>Осколки</h3>
-        <p>От Крохотного (2 mi², размер 1) до Колоссального (69.5 mi², размер 43).</p>
-      </div>
-      <div class="lp-card">
-        <div class="lp-icon">🌍</div>
-        <h3>14 рас</h3>
-        <p>Люди, эльфы, гномы, орки, нежить, драконы и другие — с кармой и специализациями.</p>
-      </div>
-      <div class="lp-card">
-        <div class="lp-icon">🔬</div>
-        <h3>20 технологий</h3>
-        <p>По 6 уровней каждое. Эффективный TL влияет на урожайность, ресурсы и мощь армии.</p>
-      </div>
-      <div class="lp-card">
-        <div class="lp-icon">⚔️</div>
-        <h3>Армия и ходы</h3>
-        <p>Найм, содержание, голод, недовольство. Каждый ход — новые решения.</p>
-      </div>
+      <div class="lp-card"><div class="lp-icon">🏝️</div><h3>Осколки</h3><p>От Крохотного (2 mi²) до Колоссального (69.5 mi²).</p></div>
+      <div class="lp-card"><div class="lp-icon">🌍</div><h3>14 рас</h3><p>Люди, эльфы, гномы, орки, нежить, драконы — с кармой и специализациями.</p></div>
+      <div class="lp-card"><div class="lp-icon">🔬</div><h3>20 технологий</h3><p>По 6 уровней. Эфф. TL влияет на урожайность, ресурсы и армию.</p></div>
+      <div class="lp-card"><div class="lp-icon">⚔️</div><h3>Ходы и армия</h3><p>Найм, содержание, голод, недовольство. Каждый ход — новые решения.</p></div>
     </div>
   </section>
 
@@ -103,7 +72,6 @@
 </footer>
 
 <script>
-// Если игры нет — прячем кнопку «Продолжить игру»
 document.addEventListener('DOMContentLoaded', () => {
   const hasSave = localStorage.getItem('va_game_state');
   if (!hasSave) {
