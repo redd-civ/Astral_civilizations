@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Правила — Люди, Осколки и Владыки</title>
+<link rel="stylesheet" href="va-styles.css">
+<style>
+  body {
+    background: #2b4a3f;
+    background-image: radial-gradient(circle at 10% 20%, #3f6b5c, #1e352b);
+    min-height: 100vh; margin: 0; padding: 20px;
+  }
+  .back-link { display: block; max-width: 1100px; margin: 0 auto 16px; color: #efe6d5; text-decoration: none; font-weight: bold; }
+  .rules-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 0; border-bottom: 3px solid #5f4a36; }
+  .rules-tab-btn {
+    background: #cbbca6; color: #2c1e12; border: 2px solid #836e58;
+    border-bottom: none; border-radius: 12px 12px 0 0;
+    padding: 10px 16px; cursor: pointer; font-weight: bold; font-size: 0.88rem;
+  }
+  .rules-tab-btn.active { background: #7c5f4b; color: #efe6d5; }
+  .rules-tab { display: none; padding-top: 16px; }
+  .rules-tab.active { display: block; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-link">← На главную</a>
+
+<div class="va-game">
+  <h1>📖 Правила мира</h1>
+
+  <div class="rules-tabs">
+    <button class="rules-tab-btn active" onclick="showRule(event,'r-basics')">Основы</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-races')">Расы</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-resources')">Ресурсы</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-tech')">Технологии</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-buildings')">Здания</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-army')">Армия</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-actions')">Действия</button>
+    <button class="rules-tab-btn" onclick="showRule(event,'r-balance')">Баланс</button>
+  </div>
+
+  <div id="r-basics" class="rules-tab active">
+    <h2>Основы</h2>
+    <p><strong>Размер осколка</strong> (1–43) определяет лимит зданий, доход Эссенции и лимит хранения.</p>
+    <table>
+      <tr><th>Название</th><th>Площадь (mi²)</th><th>Размер</th></tr>
+      <tr><td>Крохотный</td><td>2</td><td>1</td></tr>
+      <tr><td>Маленький</td><td>3.3</td><td>2</td></tr>
+      <tr><td>Небольшой</td><td>5.5</td><td>3</td></tr>
+      <tr><td>Средний</td><td>9.1</td><td>5</td></tr>
+      <tr><td>Большой</td><td>15.2</td><td>9</td></tr>
+      <tr><td>Огромный</td><td>25.2</td><td>15</td></tr>
+      <tr><td>Титанический</td><td>41.8</td><td>26</td></tr>
+      <tr><td>Колоссальный</td><td>69.5</td><td>43</td></tr>
+    </table>
+    <p><strong>Эффективный TL</strong> = 1 + уровень технологии в отрасли. Без технологии Еды — эфф. TL1 (голод).</p>
+  </div>
+
+  <div id="r-races" class="rules-tab">
+    <h2>Расы</h2>
+    <p>14 рас. Карма (положительная / нейтральная / отрицательная) влияет на дипломатию. Расовые бонусы дают +1 к профильной технологии при генерации.</p>
+    <table>
+      <tr><th>Раса</th><th>Карма</th><th>Специализация</th></tr>
+      <tr><td>👤 Люди</td><td>Нейтральная</td><td>Универсальность</td></tr>
+      <tr><td>🧝 Эльфы</td><td>Положительная</td><td>Магия природы</td></tr>
+      <tr><td>⛏️ Гномы</td><td>Нейтральная</td><td>Промышленность</td></tr>
+      <tr><td>🪓 Орки</td><td>Отрицательная</td><td>Ближний бой</td></tr>
+      <tr><td>💀 Нежить</td><td>Отрицательная</td><td>Алхимия</td></tr>
+      <tr><td>🐉 Драконы</td><td>Нейтральная</td><td>Артефакторика</td></tr>
+      <tr><td>🍺 Полурослики</td><td>Положительная</td><td>Еда</td></tr>
+      <tr><td>😈 Демоны</td><td>Отрицательная</td><td>Демонология</td></tr>
+      <tr><td>👼 Ангелы</td><td>Положительная</td><td>Культура</td></tr>
+      <tr><td>⚙️ Механоиды</td><td>Нейтральная</td><td>Инженерия</td></tr>
+      <tr><td>🐺 Зверолюди</td><td>Нейтральная</td><td>Животные</td></tr>
+      <tr><td>💎 Кристаллиды</td><td>Нейтральная</td><td>Кристаллургия</td></tr>
+      <tr><td>🌑 Теневые</td><td>Отрицательная</td><td>Маскировка</td></tr>
+      <tr><td>🌊 Левиафаны</td><td>Нейтральная</td><td>Мореходство</td></tr>
+    </table>
+  </div>
+
+  <div id="r-resources" class="rules-tab">
+    <h2>Ресурсы</h2>
+    <ul>
+      <li><strong>Эссенция</strong> = размер × заселённость × (лояльность / 5) + бонусы. Лимит хранения = размер мира + население/1000 + бонусы.</li>
+      <li><strong>Люди</strong> = floor(население × 0.6 / 250). Занятые не возвращаются.</li>
+      <li><strong>AP</strong> = избыток еды. 1 AP = 100 человек. Лимит = размер × 2 + здания.</li>
+      <li><strong>Материя</strong> — только от производств, зависит от эфф. TL.</li>
+      <li><strong>Знание</strong> — от Башни учёного (+1), Библиотеки (+2), Университета (+3) и т.д.</li>
+    </ul>
+  </div>
+
+  <div id="r-tech" class="rules-tab">
+    <h2>Технологии</h2>
+    <p>20 технологий по 6 уровней.</p>
+    <table>
+      <tr><th>Переход</th><th>Знание</th><th>Эссенция</th><th>Время</th></tr>
+      <tr><td>0→1</td><td>5</td><td>5</td><td>1 сезон</td></tr>
+      <tr><td>1→2</td><td>10</td><td>10</td><td>1 сезон</td></tr>
+      <tr><td>2→3</td><td>15</td><td>15</td><td>1 сезон</td></tr>
+      <tr><td>3→4</td><td>25</td><td>25</td><td>2 сезона</td></tr>
+      <tr><td>4→5</td><td>40</td><td>40</td><td>3 сезона</td></tr>
+      <tr><td>5→6</td><td>60</td><td>60</td><td>5 сезонов</td></tr>
+    </table>
+    <p><strong>Лимит исследований:</strong> 3 технологии / 5 уровней за ход.</p>
+    <p><strong>Эффективный TL</strong> = 1 + уровень. Железо доступно на эфф. TL2, сталь — на эфф. TL3.</p>
+  </div>
+
+  <div id="r-buildings" class="rules-tab">
+    <h2>Здания</h2>
+    <p>Лимит = размер осколка. Каждое требует технологии. Стоимость: Эссенция + Материя.</p>
+    <p><strong>Примеры:</strong></p>
+    <table>
+      <tr><th>Технология</th><th>Здание</th><th>Эффект</th></tr>
+      <tr><td>Еда 1</td><td>Ферма</td><td>+20% к производству еды, +5 AP хранения</td></tr>
+      <tr><td>Еда 2</td><td>Мельница</td><td>+30%, +5 AP</td></tr>
+      <tr><td>Промышленность 1</td><td>Шахта</td><td>+2 Материи (эфф. TL2)</td></tr>
+      <tr><td>Промышленность 1</td><td>Кузница</td><td>+2 Материи, оружие и доспехи</td></tr>
+      <tr><td>Наука 1</td><td>Башня учёного</td><td>+1 Знание, +1 Эссенция</td></tr>
+      <tr><td>Наука 3</td><td>Университет</td><td>+3 Знания, −20% к стоимости исследований</td></tr>
+      <tr><td>Медицина 1</td><td>Лазарет</td><td>+0.05% к приросту населения</td></tr>
+    </table>
+  </div>
+
+  <div id="r-army" class="rules-tab">
+    <h2>Армия</h2>
+    <p><strong>Найм:</strong></p>
+    <table>
+      <tr><th>Ресурс</th><th>Базовый</th><th>Улучшенный</th><th>Элитный</th></tr>
+      <tr><td>Эссенция</td><td>2</td><td>3</td><td>4</td></tr>
+      <tr><td>Люди</td><td>1</td><td>1</td><td>2</td></tr>
+      <tr><td>Материя</td><td>1</td><td>2</td><td>4</td></tr>
+    </table>
+    <p><strong>Содержание:</strong> 1 Люди (заняты навсегда) + 1 AP за ход.</p>
+    <p><strong>Недовольство:</strong> 3 уровня. Голод повышает на 1 за ход. При 3 — дезертирство.</p>
+    <p><strong>Бой:</strong> 1 Э активация + 1 Э за героя + 1 Э за отряд сверх бесплатных слотов.</p>
+  </div>
+
+  <div id="r-actions" class="rules-tab">
+    <h2>Действия за ход</h2>
+    <p><strong>Базово:</strong> 2 больших действия.</p>
+    <p><strong>Логистика:</strong> 1 ур. +малое, 2 ур. +малое, 3 ур. +большое, 4 ур. +малое, 5 ур. +большое, 6 ур. +большое.</p>
+    <p><strong>Исследование:</strong> до 3 технологий / 5 уровней.</p>
+    <p><strong>Строительство:</strong> 3 Э + 2 Материи.</p>
+    <p><strong>Найм:</strong> см. таблицу армии.</p>
+  </div>
+
+  <div id="r-balance" class="rules-tab">
+    <h2>Баланс</h2>
+    <ul>
+      <li><strong>Базовый прирост населения:</strong> +0.1% за сезон. Медицина добавляет +0.05% за уровень.</li>
+      <li><strong>Голод:</strong> если AP не хватает — население сокращается пропорционально.</li>
+      <li><strong>Недонаселённость:</strong> ниже 75% заселённости — штраф к стройке и исследованиям (до +150%).</li>
+      <li><strong>Пир:</strong> повышает лояльность на +1, стоит Размер мира × 1 AP.</li>
+      <li><strong>Лимит исследований:</strong> 3 технологии / 5 уровней за ход — потолок.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+function showRule(e, id) {
+  document.querySelectorAll('.rules-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.rules-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  e.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>
