@@ -43,7 +43,20 @@ VA.formulas = {
     const lvl = techs[t.req.tech] || 0;
     if (t.req.orTech) return lvl >= t.req.lvl || (techs[t.req.orTech] || 0) >= t.req.lvl;
     return lvl >= t.req.lvl;
-  })
+  }),
+
+  // Стоимость перехода на следующий уровень технологии
+  techCost: (fromLvl) => {
+    const costs = [
+      { zn: 5,   el: 5,   time: 1 },
+      { zn: 10,  el: 10,  time: 1 },
+      { zn: 15,  el: 15,  time: 1 },
+      { zn: 25,  el: 25,  time: 2 },
+      { zn: 40,  el: 40,  time: 3 },
+      { zn: 60,  el: 60,  time: 5 }
+    ];
+    return costs[fromLvl] || costs[costs.length - 1];
+  }
 };
 
 VA.Engine = {
