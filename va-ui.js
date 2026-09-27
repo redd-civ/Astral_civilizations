@@ -225,6 +225,12 @@ VA.UI = {
       ${VA.escapeHtml(d.worldName)} · ${d.race.name} · ${techCount} технологий · ${d.troops.length} отрядов</footer>`;
 
     o.innerHTML = html;
+    o.innerHTML += `
+  <div style="text-align:center; margin-top:24px;">
+    <button class="va-gen-btn" onclick="VA.UI.startGame()" style="font-size:1.1rem; padding:16px 36px;">
+      ⚔️ Сохранить и начать игру
+    </button>
+  </div>`;
     o.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 };
