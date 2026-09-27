@@ -24,3 +24,16 @@ VA.sizes = [
 ];
 
 VA.density = {1:125, 2:175, 3:275, 4:450, 5:725};
+
+// ==================== ХЕЛПЕРЫ (общие для всех страниц) ====================
+VA.pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+VA.fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+VA.escapeHtml = (s) => s.replace(/[&<>"']/g, c => (
+  {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
+));
+
+VA.roman = (n) => ['','I','II','III','IV','V','VI','VII','VIII','IX','X'][n] || n;
+
+VA.orbClass = (size) => size <= 1 ? 'tiny' : size <= 3 ? 'small' : size <= 9 ? 'medium' : 'large';
